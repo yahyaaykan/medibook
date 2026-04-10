@@ -31,7 +31,7 @@ class MediBookApp extends StatelessWidget {
           secondary: const Color(0xFF1DE9B6),
         ),
         scaffoldBackgroundColor: const Color(0xFF0A0E0D),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           color: const Color(0xFF121A18),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),

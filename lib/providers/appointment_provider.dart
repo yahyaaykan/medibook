@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/patient_model.dart';
 import '../models/hospital_models.dart';
+import 'package:uuid/uuid.dart';
 
 class AppointmentProvider with ChangeNotifier {
   int _currentStep = 0;
