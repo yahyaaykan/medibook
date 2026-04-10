@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
 import '../providers/appointment_provider.dart';
@@ -27,6 +28,7 @@ class _Step1PatientInfoState extends State<Step1PatientInfo> {
       padding: const EdgeInsets.all(24),
       child: Form(
         key: _formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -38,24 +40,34 @@ class _Step1PatientInfoState extends State<Step1PatientInfo> {
             TextFormField(
               key: const ValueKey('input_ad'),
               initialValue: patient.firstName,
-              decoration: const InputDecoration(labelText: 'Ad'),
+              decoration: const InputDecoration(labelText: 'Ad', hintText: 'Örn: Ahmet'),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[a-zA-ZğüşıöçĞÜŞİÖÇ\s]')),
+              ],
               onChanged: (v) => patient.firstName = v,
-              validator: (v) => Validators.validateRequired(v, 'Ad'),
+              validator: (v) => Validators.validateName(v, 'Ad'),
             ),
             const SizedBox(height: 16),
             TextFormField(
               key: const ValueKey('input_soyad'),
               initialValue: patient.lastName,
-              decoration: const InputDecoration(labelText: 'Soyad'),
+              decoration: const InputDecoration(labelText: 'Soyad', hintText: 'Örn: Yılmaz'),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[a-zA-ZğüşıöçĞÜŞİÖÇ\s]')),
+              ],
               onChanged: (v) => patient.lastName = v,
-              validator: (v) => Validators.validateRequired(v, 'Soyad'),
+              validator: (v) => Validators.validateName(v, 'Soyad'),
             ),
             const SizedBox(height: 16),
             TextFormField(
               key: const ValueKey('input_tc'),
               initialValue: patient.tcNo,
-              decoration: const InputDecoration(labelText: 'TC Kimlik No'),
+              decoration: const InputDecoration(labelText: 'TC Kimlik No', hintText: '11 Haneli TC No'),
               keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(11),
+              ],
               onChanged: (v) => patient.tcNo = v,
               validator: Validators.validateTC,
             ),
@@ -73,10 +85,10 @@ class _Step1PatientInfoState extends State<Step1PatientInfo> {
               key: const ValueKey('input_telefon'),
               inputFormatters: [_phoneFormatter],
               initialValue: patient.phone,
-              decoration: const InputDecoration(labelText: 'Telefon'),
+              decoration: const InputDecoration(labelText: 'Telefon', hintText: '0(5__) ___ __ __'),
               keyboardType: TextInputType.phone,
               onChanged: (v) => patient.phone = v,
-              validator: (v) => Validators.validateRequired(v, 'Telefon'),
+              validator: Validators.validatePhone,
             ),
             const SizedBox(height: 16),
             TextFormField(

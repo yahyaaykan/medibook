@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/appointment_provider.dart';
+import '../services/validators.dart';
 
 class Step2Insurance extends StatefulWidget {
   const Step2Insurance({super.key});
@@ -10,6 +11,7 @@ class Step2Insurance extends StatefulWidget {
 }
 
 class _Step2InsuranceState extends State<Step2Insurance> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _medController = TextEditingController();
 
   @override
@@ -18,7 +20,10 @@ class _Step2InsuranceState extends State<Step2Insurance> {
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24),
-      child: Column(
+      child: Form(
+        key: _formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
@@ -42,6 +47,9 @@ class _Step2InsuranceState extends State<Step2Insurance> {
               initialValue: provider.insuranceCompany,
               decoration: const InputDecoration(labelText: 'Sigorta Firması'),
               onChanged: (v) => provider.insuranceCompany = v,
+              validator: (v) => provider.insuranceType == 'Özel' 
+                  ? Validators.validateRequired(v, 'Sigorta Firması') 
+                  : null,
             ),
           ],
           const SizedBox(height: 24),
@@ -125,6 +133,7 @@ class _Step2InsuranceState extends State<Step2Insurance> {
           ],
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 }
